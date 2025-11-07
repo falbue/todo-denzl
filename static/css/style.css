@@ -12,12 +12,67 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Manrope', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-optical-sizing: auto;
     line-height: 1.6;
     background-color: var(--bg-primary);
     color: var(--text-primary);
     transition: all 0.3s ease;
 }
+
+/* Manrope utility classes: use .manrope or .manrope-<weight> to set font-weight */
+.manrope {
+    font-family: 'Manrope', sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+.manrope-200 {
+    font-family: 'Manrope', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 200;
+}
+
+.manrope-300 {
+    font-family: 'Manrope', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+}
+
+.manrope-400 {
+    font-family: 'Manrope', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+}
+
+.manrope-500 {
+    font-family: 'Manrope', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+}
+
+.manrope-600 {
+    font-family: 'Manrope', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+}
+
+.manrope-700 {
+    font-family: 'Manrope', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+}
+
+.manrope-800 {
+    font-family: 'Manrope', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+}
+
+/* Example usage:
+   <h2 class="manrope manrope-600">Заголовок</h2>
+   Body text uses Manrope by default.
+*/
 
 /* ========== ЦВЕТОВЫЕ ТЕМЫ ========== */
 
