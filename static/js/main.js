@@ -427,7 +427,15 @@ function clearTaskForm() {
  */
 function handleSortChange(e) {
     const value = e.target.value;
-    const [sortBy, order] = value.split('_');
+    // Значение может содержать подчеркивание в названии поля (например "created_at_desc").
+    // Разделяем по последнему подчеркиванию, чтобы корректно получить поле сортировки и направление.
+    const idx = value.lastIndexOf('_');
+    let sortBy = value;
+    let order = 'desc';
+    if (idx !== -1) {
+        sortBy = value.slice(0, idx);
+        order = value.slice(idx + 1);
+    }
     loadTasks(sortBy, order);
 }
 
