@@ -1,0 +1,118 @@
+#!/bin/bash
+set -euo pipefail
+
+OWNER=$1
+REPO_NAME=$2
+VERSION_TYPE=$3  # 'tag' или 'branch'
+VERSION=$4       # имя тега или ветки
+
+ENV_FILE="/tmp/.env/.production"
+source ${ENV_FILE}
+
+if [ "${PROJECT}" = "telegram_bot" ]; then
+    WORK_DIR="/var/bots/${REPO_NAME}"
+    GIST_BASE="https://gist.githubusercontent.com/falbue/f0a3c448e88bb4d85b990af0137e17a4/raw"
+
+elif [ "${PROJECT}" = "gunicorn" ]; then
+    WORK_DIR="/var/www/${DOMAIN}"
+    GIST_BASE="https://gist.githubusercontent.com/falbue/42bccfd10353c810408b8535dcc20816/raw"
+    
+    # Генерация SSL сертификата (если нужно)
+    if [ ! -d "/etc/letsencrypt/live/${DOMAIN}" ]; then
+        certbot certonly --nginx --non-interactive --agree-tos \
+            --email "${CERTBOT_EMAIL}" \
+            -d "${DOMAIN}" \
+            --keep-until-expiring
+    fi
+
+else
+    echo "Неизвестный проект. Укажите тип проекта в .production"
+    exit 1
+fi
+
+mkdir -p "${WORK_DIR}"
+cd "${WORK_DIR}"
+
+rm -f Dockerfile docker-compose.yml gunicorn.conf.py nginx.conf
+
+if [ -d ".git" ]; then
+    echo "Обновление репозитория..."
+    git fetch --all --tags
+    
+    if [ "$VERSION_TYPE" = "tag" ]; then
+        echo "Переключение на тег: $VERSION"
+        git checkout "tags/$VERSION" -b "deploy-$VERSION" 2>/dev/null || git checkout "tags/$VERSION"
+    else
+        echo "Переключение на ветку: $VERSION"
+        git checkout "$VERSION"
+        git reset --hard "origin/$VERSION"
+    fi
+else
+    rm -rf * .[!.]* ..?*
+    echo "Клонирование репозитория..."
+    git clone git@github.com:${OWNER}/${REPO_NAME}.git .
+    
+    if [ "$VERSION_TYPE" = "tag" ]; then
+        echo "Переключение на тег: $VERSION"
+        git checkout "tags/$VERSION"
+    else
+        echo "Переключение на ветку: $VERSION"
+        git checkout "$VERSION"
+    fi
+fi
+
+# Загрузка Dockerfile только если отсутствует в репозитории
+if [ ! -f "Dockerfile" ]; then
+    echo "Скачивание Dockerfile..."
+    curl -sLf -o Dockerfile "${GIST_BASE}/Dockerfile"
+fi
+
+# Загрузка docker-compose.yml только если отсутствует в репозитории
+if [ ! -f "docker-compose.yml" ]; then
+    echo "Скачивание docker-compose.yml..."
+    curl -sLf -o docker-compose.yml "${GIST_BASE}/docker-compose.yml"
+fi
+
+# Действия специфичные для Gunicorn
+if [ "${PROJECT}" = "gunicorn" ]; then
+    # Загрузка gunicorn.conf.py только если отсутствует
+    if [ ! -f "gunicorn.conf.py" ]; then
+        echo "Скачивание gunicorn.conf.py..."
+        curl -sLf -o gunicorn.conf.py "${GIST_BASE}/gunicorn.conf.py"
+    fi
+    
+    # Загрузка nginx.conf только если отсутствует
+    if [ ! -f "nginx.conf" ]; then
+        echo "Скачивание nginx.conf..."
+        curl -sLf -o nginx.conf "${GIST_BASE}/nginx.conf"
+    fi
+    
+    # Настройка Nginx
+    NGINX_CONF="/etc/nginx/sites-available/${DOMAIN}"
+    cp nginx.conf "${NGINX_CONF}"
+    
+    # Замена плейсхолдеров
+    sed -i "s/{{DOMAIN}}/${DOMAIN}/g" "${NGINX_CONF}"
+    sed -i "s/{{PORT}}/${HOST_PORT}/g" "${NGINX_CONF}"
+    
+    # Активация конфигурации
+    ln -sf "${NGINX_CONF}" "/etc/nginx/sites-enabled/${DOMAIN}"
+    nginx -t && systemctl reload nginx
+fi
+
+# Копирование .production в рабочую директорию
+cp "${ENV_FILE}" .production
+
+# Остановка существующих контейнеров (без удаления)
+if [ "$(docker-compose ps -q)" ]; then
+    echo "Остановка работающих контейнеров..."
+    docker-compose stop
+fi
+
+# Пересборка и обновление контейнеров
+set -a; source .production; set +a
+echo "Пересборка и запуск контейнеров..."
+docker-compose up -d --build --force-recreate
+
+# Очистка временных файлов
+rm -f "${ENV_FILE}"

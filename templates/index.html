@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO Лист - Управление задачами</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Кастомный CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Иконки Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="min-h-screen transition-colors duration-300">
+
+    <!-- Контейнер приложения -->
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+
+        <!-- Заголовок и переключатель тем -->
+        <header class="mb-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-center md:text-left flex-1">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-2 title-text">
+                        <i class="fas fa-clipboard-check mr-3"></i>TODO Лист
+                    </h1>
+                    <p class="text-lg opacity-80">
+                        Добро пожаловать, <strong>{{ user.username }}</strong>!
+                        <span class="text-sm">({{ user.email }})</span>
+                    </p>
+                </div>
+
+                <!-- Кнопка выхода и переключатель тем -->
+                <div class="flex flex-col gap-3">
+                    <button id="logoutBtn" class="btn btn-secondary">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Выйти
+                    </button>
+
+                    <!-- Переключатель тем -->
+                    <div class="theme-selector">
+                        <label class="block text-sm font-medium mb-2">Тема:</label>
+                        <div class="flex flex-wrap gap-2 justify-center md:justify-end">
+                            <button class="theme-btn" data-theme="sea" title="Морская">
+                                <i class="fas fa-water"></i>
+                            </button>
+                            <button class="theme-btn" data-theme="orange" title="Orange Juice">
+                                <i class="fas fa-sun"></i>
+                            </button>
+                            <button class="theme-btn" data-theme="tiffany" title="Тиффани">
+                                <i class="fas fa-gem"></i>
+                            </button>
+                            <button class="theme-btn" data-theme="dark" title="Тёмная">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                            <button class="theme-btn" data-theme="light" title="Светлая">
+                                <i class="fas fa-lightbulb"></i>
+                            </button>
+                            <button class="theme-btn" data-theme="wheat" title="Пшеница">
+                                <i class="fas fa-seedling"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header> <!-- Форма добавления задачи -->
+        <section class="mb-8">
+            <div class="card">
+                <h2 class="text-2xl font-bold mb-4">
+                    <i class="fas fa-plus-circle mr-2"></i>Новая задача
+                </h2>
+
+                <form id="taskForm" class="space-y-4">
+                    <!-- Название задачи -->
+                    <div>
+                        <label for="taskTitle" class="block text-sm font-medium mb-2">
+                            Название задачи <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="taskTitle" name="title" class="input-field w-full"
+                            placeholder="Например: Купить продукты" required maxlength="200">
+                        <p class="text-xs mt-1 opacity-70">Максимум 200 символов</p>
+                    </div>
+
+                    <!-- Описание задачи -->
+                    <div>
+                        <label for="taskDescription" class="block text-sm font-medium mb-2">
+                            Описание (необязательно)
+                        </label>
+                        <textarea id="taskDescription" name="description" class="input-field w-full" rows="3"
+                            placeholder="Добавьте детали к задаче..." maxlength="1000"></textarea>
+                        <p class="text-xs mt-1 opacity-70">Максимум 1000 символов</p>
+                    </div>
+
+                    <!-- Кнопка отправки -->
+                    <div class="flex gap-3">
+                        <button type="submit" class="btn btn-primary flex-1">
+                            <i class="fas fa-plus mr-2"></i>Добавить задачу
+                        </button>
+                        <button type="button" id="clearForm" class="btn btn-secondary">
+                            <i class="fas fa-eraser"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Фильтры и сортировка -->
+        <section class="mb-6">
+            <div class="card">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <!-- Статистика -->
+                    <div class="flex gap-4 text-sm">
+                        <div class="stat-badge">
+                            <i class="fas fa-tasks mr-1"></i>
+                            Всего: <span id="totalTasks" class="font-bold">0</span>
+                        </div>
+                        <div class="stat-badge">
+                            <i class="fas fa-clock mr-1"></i>
+                            В работе: <span id="pendingTasks" class="font-bold">0</span>
+                        </div>
+                        <div class="stat-badge">
+                            <i class="fas fa-check-circle mr-1"></i>
+                            Выполнено: <span id="completedTasks" class="font-bold">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Сортировка -->
+                    <div class="flex items-center gap-3">
+                        <label for="sortBy" class="text-sm font-medium">Сортировать:</label>
+                        <select id="sortBy" class="input-field">
+                            <option value="created_at_desc">Сначала новые</option>
+                            <option value="created_at_asc">Сначала старые</option>
+                            <option value="status_asc">По статусу (А-Я)</option>
+                            <option value="title_asc">По названию (А-Я)</option>
+                            <option value="title_desc">По названию (Я-А)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Список задач -->
+        <section>
+            <div id="tasksList" class="space-y-4">
+                <!-- Задачи будут добавлены динамически через JavaScript -->
+            </div>
+
+            <!-- Сообщение если задач нет -->
+            <div id="emptyState" class="text-center py-16 card hidden">
+                <i class="fas fa-inbox text-6xl opacity-30 mb-4"></i>
+                <h3 class="text-2xl font-bold mb-2">Задач пока нет</h3>
+                <p class="opacity-70">Создайте свою первую задачу выше!</p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Модальное окно для редактирования -->
+    <div id="editModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="text-2xl font-bold">
+                    <i class="fas fa-edit mr-2"></i>Редактировать задачу
+                </h3>
+                <button id="closeModal" class="text-3xl hover:opacity-70 transition-opacity">
+                    &times;
+                </button>
+            </div>
+
+            <form id="editTaskForm" class="space-y-4">
+                <input type="hidden" id="editTaskId">
+
+                <!-- Название -->
+                <div>
+                    <label for="editTaskTitle" class="block text-sm font-medium mb-2">
+                        Название <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="editTaskTitle" class="input-field w-full" required maxlength="200">
+                </div>
+
+                <!-- Описание -->
+                <div>
+                    <label for="editTaskDescription" class="block text-sm font-medium mb-2">
+                        Описание
+                    </label>
+                    <textarea id="editTaskDescription" class="input-field w-full" rows="3" maxlength="1000"></textarea>
+                </div>
+
+                <!-- Статус -->
+                <div>
+                    <label for="editTaskStatus" class="block text-sm font-medium mb-2">
+                        Статус
+                    </label>
+                    <select id="editTaskStatus" class="input-field w-full">
+                        <option value="pending">В работе</option>
+                        <option value="completed">Выполнено</option>
+                    </select>
+                </div>
+
+                <!-- Кнопки -->
+                <div class="flex gap-3">
+                    <button type="submit" class="btn btn-primary flex-1">
+                        <i class="fas fa-save mr-2"></i>Сохранить
+                    </button>
+                    <button type="button" id="cancelEdit" class="btn btn-secondary flex-1">
+                        <i class="fas fa-times mr-2"></i>Отмена
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div id="notifications" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>

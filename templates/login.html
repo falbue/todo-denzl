@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход - TODO Лист</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Кастомный CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Иконки Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="min-h-screen flex items-center justify-center transition-colors duration-300">
+
+    <!-- Быстрое применение темы из localStorage до загрузки внешних скриптов -->
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem('todoTheme') || 'light';
+                document.body.setAttribute('data-theme', saved);
+                document.addEventListener('DOMContentLoaded', function () {
+                    document.querySelectorAll('.theme-btn-small, .theme-btn').forEach(function (btn) {
+                        btn.classList.toggle('active', btn.getAttribute('data-theme') === saved);
+                    });
+                });
+            } catch (e) { /* ignore */ }
+        })();
+    </script>
+
+    <!-- Контейнер входа -->
+    <div class="w-full max-w-md px-4">
+
+        <!-- Переключатель тем (компактный) -->
+        <div class="text-right mb-4">
+            <div class="inline-flex gap-2 p-2 rounded-lg theme-color">
+                <button class="theme-btn-small" data-theme="sea" title="Морская"><i class="fas fa-water"></i></button>
+                <button class="theme-btn-small" data-theme="orange" title="Orange Juice"><i
+                        class="fas fa-sun"></i></button>
+                <button class="theme-btn-small" data-theme="tiffany" title="Тиффани"><i class="fas fa-gem"></i></button>
+                <button class="theme-btn-small" data-theme="dark" title="Тёмная"><i class="fas fa-moon"></i></button>
+                <button class="theme-btn-small" data-theme="light" title="Светлая"><i
+                        class="fas fa-lightbulb"></i></button>
+                <button class="theme-btn-small" data-theme="wheat" title="Пшеница"><i
+                        class="fas fa-seedling"></i></button>
+            </div>
+        </div>
+
+        <!-- Карточка входа -->
+        <div class="card">
+            <div class="text-center mb-8">
+                <div class="text-5xl mb-4">
+                    <i class="fas fa-clipboard-check" style="color: var(--accent);"></i>
+                </div>
+                <h1 class="text-3xl font-bold title-text mb-2">Вход в систему</h1>
+                <p class="opacity-70">Войдите в свой аккаунт</p>
+            </div>
+
+            <!-- Форма входа -->
+            <form id="loginForm" class="space-y-4">
+
+                <!-- Имя пользователя или Email -->
+                <div>
+                    <label for="username" class="block text-sm font-medium mb-2">
+                        <i class="fas fa-user mr-1"></i>Имя пользователя или Email <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="username" name="username" class="input-field w-full"
+                        placeholder="Введите имя пользователя или email" required autocomplete="username">
+                </div>
+
+                <!-- Пароль -->
+                <div>
+                    <label for="password" class="block text-sm font-medium mb-2">
+                        <i class="fas fa-lock mr-1"></i>Пароль <span class="text-red-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <input type="password" id="password" name="password" class="input-field w-full pr-12"
+                            placeholder="Введите пароль" required autocomplete="current-password">
+                        <button type="button" id="togglePassword"
+                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xl opacity-60 hover:opacity-100">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Кнопка входа -->
+                <button type="submit" class="btn btn-primary w-full">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Войти
+                </button>
+
+                <!-- Ссылка на регистрацию -->
+                <div class="text-center pt-4 border-t" style="border-color: var(--border);">
+                    <p class="opacity-70">
+                        Нет аккаунта?
+                        <a href="/register" class="font-bold hover:underline" style="color: var(--accent);">
+                            Зарегистрироваться
+                        </a>
+                    </p>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- Информация -->
+        <div class="mt-6 text-center opacity-60 text-sm">
+            <p>
+                <i class="fas fa-info-circle mr-1"></i>
+                После входа вы сможете управлять своими задачами
+            </p>
+        </div>
+
+    </div>
+
+    <!-- Уведомления -->
+    <div id="notifications" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+</body>
+
+</html>
