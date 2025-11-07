@@ -255,6 +255,36 @@ def get_tasks():
     
     return jsonify(tasks_list)
 
+
+@app.route('/api/stats/calendar', methods=['GET'])
+@login_required
+def calendar_stats():
+    """API: Получить статистику по дням (количество выполненных задач) для календаря-heatmap"""
+    user_id = session['user_id']
+    # Параметр days опциональный — сколько дней назад включать (по умолчанию 365)
+    try:
+        days = int(request.args.get('days', 365))
+    except Exception:
+        days = 365
+
+    conn = get_db_connection()
+    # Группируем по дате updated_at для задач со статусом 'completed'
+    rows = conn.execute(
+        """
+        SELECT DATE(updated_at) as day, COUNT(*) as cnt
+        FROM tasks
+        WHERE user_id = ? AND status = 'completed'
+        GROUP BY day
+        """,
+        (user_id,)
+    ).fetchall()
+    conn.close()
+
+    counts = {row['day']: row['cnt'] for row in rows}
+
+    # Вернём словарь counts — ключи в формате YYYY-MM-DD
+    return jsonify({'counts': counts, 'days': days}), 200
+
 @app.route('/api/tasks', methods=['POST'])
 @login_required
 def create_task():

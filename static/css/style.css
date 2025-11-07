@@ -11,6 +11,12 @@
     box-sizing: border-box;
 }
 
+/* Корневые переменные (фоллбек для accent RGB) */
+:root {
+    --accent-rgb: 2, 136, 209;
+    /* fallback RGB (sea) */
+}
+
 body {
     font-family: 'Manrope', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-optical-sizing: auto;
@@ -84,6 +90,7 @@ body[data-theme="sea"] {
     --text-primary: #0d47a1;
     --text-secondary: #1565c0;
     --accent: #0288d1;
+    --accent-rgb: 2, 136, 209;
     --accent-hover: #0277bd;
     --border: #81d4fa;
     --shadow: rgba(2, 136, 209, 0.1);
@@ -106,6 +113,7 @@ body[data-theme="orange"] {
     --text-secondary: #bdbdbd;
     /* secondary text */
     --accent: #ff6d00;
+    --accent-rgb: 255, 109, 0;
     /* orange accent */
     --accent-hover: #ff7f2a;
     /* accent on hover */
@@ -125,6 +133,7 @@ body[data-theme="tiffany"] {
     --text-primary: #004d40;
     --text-secondary: #00695c;
     --accent: #00897b;
+    --accent-rgb: 0, 137, 123;
     --accent-hover: #00796b;
     --border: #80cbc4;
     --shadow: rgba(0, 137, 123, 0.1);
@@ -141,6 +150,7 @@ body[data-theme="dark"] {
     --text-primary: #e0e0e0;
     --text-secondary: #b0b0b0;
     --accent: #bb86fc;
+    --accent-rgb: 187, 134, 252;
     --accent-hover: #a56de2;
     --border: #404040;
     --shadow: rgba(0, 0, 0, 0.5);
@@ -157,6 +167,7 @@ body[data-theme="light"] {
     --text-primary: #212121;
     --text-secondary: #424242;
     --accent: #2196f3;
+    --accent-rgb: 33, 150, 243;
     --accent-hover: #1976d2;
     --border: #e0e0e0;
     --shadow: rgba(0, 0, 0, 0.08);
@@ -173,6 +184,7 @@ body[data-theme="wheat"] {
     --text-primary: #5d4037;
     --text-secondary: #6d4c41;
     --accent: #8d6e63;
+    --accent-rgb: 141, 110, 99;
     --accent-hover: #795548;
     --border: #d7ccc8;
     --shadow: rgba(141, 110, 99, 0.1);
@@ -550,4 +562,64 @@ body[data-theme="wheat"] {
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--accent-hover);
+}
+
+/* ========== CALENDAR HEATMAP ========== */
+.calendar {
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+    overflow-x: auto;
+    padding-bottom: 6px;
+}
+
+.calendar .week {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.calendar .day {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    background: var(--bg-secondary);
+}
+
+.calendar .day:hover {
+    transform: scale(1.15);
+    transition: transform 0.12s ease;
+}
+
+.legend-item {
+    margin-right: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px
+}
+
+.legend-box {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    vertical-align: middle
+}
+
+.heat-1 {
+    background: rgba(var(--accent-rgb), 0.18) !important;
+}
+
+.heat-2 {
+    background: rgba(var(--accent-rgb), 0.32) !important;
+}
+
+.heat-3 {
+    background: rgba(var(--accent-rgb), 0.56) !important;
+}
+
+.heat-4 {
+    background: rgba(var(--accent-rgb), 0.85) !important;
 }

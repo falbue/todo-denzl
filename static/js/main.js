@@ -19,9 +19,107 @@ document.addEventListener('DOMContentLoaded', () => {
     // Загрузка задач
     loadTasks();
 
+    // Загрузка календаря продуктивности
+    loadCalendar();
+
     // Привязка событий
     bindEvents();
 });
+/**
+ * Загрузить данные для календаря-heatmap и отрисовать
+ */
+async function loadCalendar(days = 365) {
+    try {
+        const response = await fetch(`/api/stats/calendar?days=${days}`);
+
+        if (response.status === 401) {
+            // Перенаправление на страницу входа если не авторизован
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error('Ошибка загрузки календаря');
+        }
+
+        const data = await response.json();
+        const counts = data.counts || {};
+
+        renderCalendar(counts, days);
+
+    } catch (err) {
+        console.error('Ошибка календаря:', err);
+    }
+}
+
+/**
+ * Отрисовать календарь heatmap на основе словаря { 'YYYY-MM-DD': count }
+ */
+function renderCalendar(counts, days = 365) {
+    const container = document.getElementById('calendarHeatmap');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const end = new Date();
+    const start = new Date();
+    start.setDate(end.getDate() - (days - 1));
+
+    // Найти первую дату в начале недели (воскресенье) перед стартом
+    const first = new Date(start);
+    first.setDate(first.getDate() - first.getDay());
+
+    // Соберём массив дат от first до end
+    const dates = [];
+    for (let d = new Date(first); d <= end; d.setDate(d.getDate() + 1)) {
+        dates.push(new Date(d));
+    }
+
+    // Подготовим недели (колонками)
+    const weeks = [];
+    for (let i = 0; i < dates.length; i += 7) {
+        weeks.push(dates.slice(i, i + 7));
+    }
+
+    // Найдём максимальное значение для нормализации
+    let maxCount = 0;
+    Object.values(counts).forEach(v => { if (v > maxCount) maxCount = v; });
+    if (maxCount === 0) maxCount = 1;
+
+    // Создаём DOM
+    weeks.forEach(week => {
+        const col = document.createElement('div');
+        col.className = 'week';
+        week.forEach(date => {
+            const iso = date.toISOString().slice(0, 10);
+            // Если дата раньше start, делаем прозрачный пустой блок
+            const dayElem = document.createElement('div');
+            dayElem.className = 'day';
+            const count = counts[iso] || 0;
+
+            // Присвоим класс heat-N по порогам
+            const pct = count / maxCount;
+            let cls = '';
+            if (count === 0) cls = '';
+            else if (pct <= 0.25) cls = 'heat-1';
+            else if (pct <= 0.5) cls = 'heat-2';
+            else if (pct <= 0.75) cls = 'heat-3';
+            else cls = 'heat-4';
+
+            if (cls) dayElem.classList.add(cls);
+
+            // Тултип
+            const labelDate = date.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            dayElem.title = `${labelDate}: ${count} выполнено`;
+
+            // Пустые ячейки до реального start
+            if (date < start) {
+                dayElem.style.visibility = 'hidden';
+            }
+
+            col.appendChild(dayElem);
+        });
+        container.appendChild(col);
+    });
+}
 
 // ========== УПРАВЛЕНИЕ ТЕМАМИ ==========
 

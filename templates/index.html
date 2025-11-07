@@ -171,6 +171,29 @@
             </div>
         </section>
 
+        <!-- Календарь продуктивности -->
+        <section class="mb-6">
+            <div class="card">
+                <h2 class="text-2xl font-bold mb-4">
+                    <i class="fas fa-calendar-check mr-2"></i>Календарь продуктивности
+                </h2>
+
+                <p class="text-sm opacity-80 mb-3">Просмотр выполненных задач по датам (heatmap). Цвет показывает
+                    количество выполненных задач в день.</p>
+
+                <div id="calendarHeatmap" class="calendar"></div>
+
+                <div class="mt-3 text-sm opacity-80">
+                    <span class="mr-2">Легенда:</span>
+                    <span class="legend-item"> <span class="legend-box" style="background:#efefef"></span> 0</span>
+                    <span class="legend-item"> <span class="legend-box heat-1"></span> 1</span>
+                    <span class="legend-item"> <span class="legend-box heat-2"></span> 2–3</span>
+                    <span class="legend-item"> <span class="legend-box heat-3"></span> 4–6</span>
+                    <span class="legend-item"> <span class="legend-box heat-4"></span> 7+</span>
+                </div>
+            </div>
+        </section>
+
         <!-- Список задач -->
         <section>
             <div id="tasksList" class="space-y-4">
