@@ -94,18 +94,27 @@ body[data-theme="sea"] {
 
 /* Тема: Orange Juice */
 body[data-theme="orange"] {
-    --bg-primary: #fff3e0;
-    --bg-secondary: #ffffff;
-    --bg-card: #ffffff;
-    --text-primary: #e65100;
-    --text-secondary: #f57c00;
-    --accent: #ff9800;
-    --accent-hover: #fb8c00;
-    --border: #ffcc80;
-    --shadow: rgba(255, 152, 0, 0.1);
-    --success: #689f38;
-    --danger: #d32f2f;
-    --warning: #fbc02d;
+    /* Dark-gray + Orange accent theme (matches contrast of dark/purple theme) */
+    --bg-primary: #1a1a1a;
+    /* dark page background */
+    --bg-secondary: #262626;
+    /* slightly lighter surface */
+    --bg-card: #2d2d2d;
+    /* card background */
+    --text-primary: #e6e6e6;
+    /* main readable text */
+    --text-secondary: #bdbdbd;
+    /* secondary text */
+    --accent: #ff6d00;
+    /* orange accent */
+    --accent-hover: #ff7f2a;
+    /* accent on hover */
+    --border: #3f3f3f;
+    /* muted border */
+    --shadow: rgba(0, 0, 0, 0.5);
+    --success: #66bb6a;
+    --danger: #ef5350;
+    --warning: #ffb74d;
 }
 
 /* Тема: Тиффани */
