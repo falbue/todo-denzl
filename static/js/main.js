@@ -119,6 +119,18 @@ function renderCalendar(counts, days = 365) {
         });
         container.appendChild(col);
     });
+
+    // На мобильных устройствах прокрутить календарь в конец (показать последние дни)
+    try {
+        if (window.innerWidth <= 768) {
+            // Небольшая задержка, чтобы браузер успел расчитать размеры
+            setTimeout(() => {
+                container.scrollTo({ left: container.scrollWidth, behavior: 'smooth' });
+            }, 50);
+        }
+    } catch (e) {
+        // ignore
+    }
 }
 
 // ========== УПРАВЛЕНИЕ ТЕМАМИ ==========
