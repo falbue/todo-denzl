@@ -6,8 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TODO Лист - Управление задачами</title>
 
+    <!-- SEO / Social meta -->
+    <meta name="description"
+        content="TODO-лист — простой и быстрый менеджер задач с регистрацией, персональными списками, темами и удобной сортировкой. Создавайте, редактируйте и отмечайте задачи как выполненные.">
+    <meta name="keywords" content="todo, задачи, список задач, менеджер задач, Flask, SQLite">
+    <meta name="author" content="TODO-LIST Project">
+    <meta name="robots" content="index,follow">
+    <link rel="canonical" href="{{ request.url_root }}">
+    <meta name="theme-color" content="#0ea5a4">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="TODO Лист — Управление задачами">
+    <meta property="og:description"
+        content="Простой менеджер задач с регистрацией пользователей, несколькими темами и быстрым интерфейсом на Tailwind CSS.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.url_root }}">
+    <meta property="og:image" content="{{ url_for('static', filename='favicon.svg') }}">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="TODO Лист — Управление задачами">
+    <meta name="twitter:description"
+        content="Управляйте задачами: добавляйте, редактируйте, сортируйте и отмечайте выполненные задачи. Персональные списки для каждого пользователя.">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
 
     <!-- Кастомный CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">

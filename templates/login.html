@@ -9,6 +9,32 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- SEO / Social meta -->
+    <meta name="description"
+        content="Вход в TODO Лист — войдите в свой аккаунт, чтобы управлять персональными задачами, использовать темы и сортировку.">
+    <meta name="keywords" content="todo, вход, авторизация, задачи, Flask">
+    <meta name="author" content="TODO-LIST Project">
+    <meta name="robots" content="index,follow">
+    <link rel="canonical" href="{{ request.url_root }}login">
+    <meta name="theme-color" content="#0ea5a4">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Вход — TODO Лист">
+    <meta property="og:description"
+        content="Войдите в свой аккаунт, чтобы получить доступ к списку задач и персональным настройкам.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.url_root }}login">
+    <meta property="og:image" content="{{ url_for('static', filename='favicon.svg') }}">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Вход — TODO Лист">
+    <meta name="twitter:description"
+        content="Войдите в свой аккаунт, чтобы управлять задачами и использовать персональные темы.">
+
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
+
     <!-- Кастомный CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 

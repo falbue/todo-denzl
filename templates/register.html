@@ -9,6 +9,31 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
+
+    <!-- SEO / Social meta -->
+    <meta name="description"
+        content="Регистрация в TODO Лист — создайте аккаунт, чтобы хранить персональные задачи, выбирать тему и управлять делами онлайн.">
+    <meta name="keywords" content="todo, регистрация, signup, задачи, Flask">
+    <meta name="author" content="TODO-LIST Project">
+    <meta name="robots" content="index,follow">
+    <link rel="canonical" href="{{ request.url_root }}register">
+    <meta name="theme-color" content="#0ea5a4">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Регистрация — TODO Лист">
+    <meta property="og:description"
+        content="Создайте аккаунт, чтобы управлять задачами и сохранять персональные настройки и темы.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.url_root }}register">
+    <meta property="og:image" content="{{ url_for('static', filename='favicon.svg') }}">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Регистрация — TODO Лист">
+    <meta name="twitter:description" content="Создайте аккаунт и начните управлять задачами прямо сейчас.">
+
     <!-- Кастомный CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
