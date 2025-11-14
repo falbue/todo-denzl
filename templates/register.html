@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Регистрация - TODO Лист</title>
 
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
     <!-- Google Fonts: Manrope -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,14 +36,18 @@
     <meta name="twitter:title" content="Регистрация — TODO Лист">
     <meta name="twitter:description" content="Создайте аккаунт и начните управлять задачами прямо сейчас.">
 
-    <!-- Кастомный CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/themes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
 
     <!-- Иконки Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
-<body class="min-h-screen flex items-center justify-center transition-colors duration-300">
+<body class="auth-page">
 
     <!-- Быстрое применение темы из localStorage до загрузки внешних скриптов -->
     <script>
@@ -65,91 +66,87 @@
     </script>
 
     <!-- Контейнер регистрации -->
-    <div class="w-full max-w-md px-4">
+    <div class="auth-container">
 
         <!-- Переключатель тем (компактный) -->
-        <div class="text-right mb-4">
-            <div class="inline-flex gap-2 p-2 rounded-lg theme-color">
+        <div class="auth-theme-switcher">
+            <div class="theme-switcher-compact">
                 <button class="theme-btn-small" data-theme="sea" title="Морская"><i class="fas fa-water"></i></button>
-                <button class="theme-btn-small" data-theme="orange" title="Orange Juice"><i
-                        class="fas fa-sun"></i></button>
+                <button class="theme-btn-small" data-theme="orange" title="Orange Juice"><i class="fas fa-sun"></i></button>
                 <button class="theme-btn-small" data-theme="tiffany" title="Тиффани"><i class="fas fa-gem"></i></button>
                 <button class="theme-btn-small" data-theme="dark" title="Тёмная"><i class="fas fa-moon"></i></button>
-                <button class="theme-btn-small" data-theme="light" title="Светлая"><i
-                        class="fas fa-lightbulb"></i></button>
-                <button class="theme-btn-small" data-theme="wheat" title="Пшеница"><i
-                        class="fas fa-seedling"></i></button>
+                <button class="theme-btn-small" data-theme="light" title="Светлая"><i class="fas fa-lightbulb"></i></button>
+                <button class="theme-btn-small" data-theme="wheat" title="Пшеница"><i class="fas fa-seedling"></i></button>
             </div>
         </div>
 
         <!-- Карточка регистрации -->
         <div class="card">
-            <div class="text-center mb-8">
-                <div class="text-5xl mb-4">
-                    <i class="fas fa-user-plus" style="color: var(--accent);"></i>
+            <div class="auth-header">
+                <div class="auth-icon">
+                    <i class="fas fa-user-plus"></i>
                 </div>
-                <h1 class="text-3xl font-bold title-text mb-2">Регистрация</h1>
-                <p class="opacity-70">Создайте аккаунт для управления задачами</p>
+                <h1 class="auth-title">Регистрация</h1>
+                <p class="auth-subtitle">Создайте аккаунт для управления задачами</p>
             </div>
 
             <!-- Форма регистрации -->
             <form id="registerForm" class="space-y-4">
 
                 <!-- Имя пользователя -->
-                <div>
-                    <label for="username" class="block text-sm font-medium mb-2">
-                        <i class="fas fa-user mr-1"></i>Имя пользователя <span class="text-red-500">*</span>
+                <div class="form-group">
+                    <label for="username" class="form-label">
+                        <i class="fas fa-user"></i> Имя пользователя <span style="color: var(--danger);">*</span>
                     </label>
-                    <input type="text" id="username" name="username" class="input-field w-full"
+                    <input type="text" id="username" name="username" class="input-field"
                         placeholder="Введите имя пользователя" required minlength="3" maxlength="50"
                         autocomplete="username">
-                    <p class="text-xs mt-1 opacity-70">Минимум 3 символа</p>
+                    <p class="form-hint">Минимум 3 символа</p>
                 </div>
 
                 <!-- Email -->
-                <div>
-                    <label for="email" class="block text-sm font-medium mb-2">
-                        <i class="fas fa-envelope mr-1"></i>Email <span class="text-red-500">*</span>
+                <div class="form-group">
+                    <label for="email" class="form-label">
+                        <i class="fas fa-envelope"></i> Email <span style="color: var(--danger);">*</span>
                     </label>
-                    <input type="email" id="email" name="email" class="input-field w-full"
+                    <input type="email" id="email" name="email" class="input-field"
                         placeholder="example@mail.com" required autocomplete="email">
                 </div>
 
                 <!-- Пароль -->
-                <div>
-                    <label for="password" class="block text-sm font-medium mb-2">
-                        <i class="fas fa-lock mr-1"></i>Пароль <span class="text-red-500">*</span>
+                <div class="form-group">
+                    <label for="password" class="form-label">
+                        <i class="fas fa-lock"></i> Пароль <span style="color: var(--danger);">*</span>
                     </label>
-                    <div class="relative">
-                        <input type="password" id="password" name="password" class="input-field w-full pr-12"
+                    <div class="input-with-icon">
+                        <input type="password" id="password" name="password" class="input-field"
                             placeholder="Минимум 6 символов" required minlength="6" autocomplete="new-password">
-                        <button type="button" id="togglePassword"
-                            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xl opacity-60 hover:opacity-100">
+                        <button type="button" id="togglePassword" class="input-icon">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
-                    <p class="text-xs mt-1 opacity-70">Минимум 6 символов</p>
+                    <p class="form-hint">Минимум 6 символов</p>
                 </div>
 
                 <!-- Подтверждение пароля -->
-                <div>
-                    <label for="confirmPassword" class="block text-sm font-medium mb-2">
-                        <i class="fas fa-lock mr-1"></i>Подтвердите пароль <span class="text-red-500">*</span>
+                <div class="form-group">
+                    <label for="confirmPassword" class="form-label">
+                        <i class="fas fa-lock"></i> Подтвердите пароль <span style="color: var(--danger);">*</span>
                     </label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" class="input-field w-full"
+                    <input type="password" id="confirmPassword" name="confirmPassword" class="input-field"
                         placeholder="Повторите пароль" required minlength="6" autocomplete="new-password">
                 </div>
 
                 <!-- Кнопка регистрации -->
-                <button type="submit" class="btn btn-primary w-full">
-                    <i class="fas fa-user-plus mr-2"></i>Зарегистрироваться
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-user-plus"></i> Зарегистрироваться
                 </button>
 
                 <!-- Ссылка на вход -->
-                <div class="text-center pt-4 border-t" style="border-color: var(--border);">
-                    <p class="opacity-70">
+                <div class="auth-divider">
+                    <p class="auth-subtitle">
                         Уже есть аккаунт?
-                        <a href="/login" class="font-bold hover:underline" style="color: var(--accent);">
+                        <a href="/login" class="auth-link">
                             Войти
                         </a>
                     </p>
@@ -161,7 +158,7 @@
     </div>
 
     <!-- Уведомления -->
-    <div id="notifications" class="fixed top-4 right-4 z-50 space-y-2"></div>
+    <div id="notifications" class="notifications"></div>
 
     <!-- JavaScript -->
     <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
