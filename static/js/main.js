@@ -279,24 +279,24 @@ function createTaskHTML(task) {
 
     return `
         <div class="task-item ${statusClass}" data-task-id="${task.id}">
-            <div class="flex justify-between items-start gap-4">
+            <div class="task-item-content">
                 <!-- Содержимое задачи -->
-                <div class="flex-1">
+                <div class="task-info">
                     <h3 class="task-title">${escapeHtml(task.title)}</h3>
                     ${task.description ? `<p class="task-description">${escapeHtml(task.description)}</p>` : ''}
                     
-                    <div class="flex flex-wrap gap-3 items-center mt-3">
+                    <div class="task-meta-info">
                         <span class="status-badge ${statusClass}">
-                            <i class="fas ${statusIcon} mr-1"></i>${statusText}
+                            <i class="fas ${statusIcon}"></i> ${statusText}
                         </span>
                         <span class="task-meta">
-                            <i class="fas fa-calendar-alt mr-1"></i>${createdDate}
+                            <i class="fas fa-calendar-alt"></i> ${createdDate}
                         </span>
                     </div>
                 </div>
                 
                 <!-- Кнопки действий -->
-                <div class="flex flex-col gap-2">
+                <div class="task-actions">
                     <button class="btn btn-success btn-sm toggle-status-btn" data-task-id="${task.id}" title="${toggleText}">
                         <i class="fas ${toggleIcon}"></i>
                     </button>
@@ -603,10 +603,10 @@ function showNotification(message, type = 'info') {
             type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle';
 
     notification.innerHTML = `
-        <div class="flex items-center gap-3">
-            <i class="fas ${icon} text-xl"></i>
-            <span class="flex-1">${escapeHtml(message)}</span>
-            <button class="text-xl opacity-70 hover:opacity-100" onclick="this.parentElement.parentElement.remove()">
+        <div class="notification-content">
+            <i class="fas ${icon} notification-icon"></i>
+            <span class="notification-message">${escapeHtml(message)}</span>
+            <button class="notification-close" onclick="this.parentElement.parentElement.remove()">
                 &times;
             </button>
         </div>
@@ -631,16 +631,3 @@ function escapeHtml(text) {
     div.textContent = text;
     return div.innerHTML;
 }
-
-/**
- * Дополнительные стили для маленьких кнопок
- */
-const style = document.createElement('style');
-style.textContent = `
-    .btn-sm {
-        padding: 0.5rem;
-        font-size: 0.875rem;
-        min-width: 40px;
-    }
-`;
-document.head.appendChild(style);

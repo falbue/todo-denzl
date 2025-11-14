@@ -217,10 +217,10 @@ function showNotification(message, type = 'info') {
             type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle';
 
     notification.innerHTML = `
-        <div class="flex items-center gap-3">
-            <i class="fas ${icon} text-xl"></i>
-            <span class="flex-1">${escapeHtml(message)}</span>
-            <button class="text-xl opacity-70 hover:opacity-100" onclick="this.parentElement.parentElement.remove()">
+        <div class="notification-content">
+            <i class="fas ${icon} notification-icon"></i>
+            <span class="notification-message">${escapeHtml(message)}</span>
+            <button class="notification-close" onclick="this.parentElement.parentElement.remove()">
                 &times;
             </button>
         </div>
@@ -243,37 +243,3 @@ function escapeHtml(text) {
     div.textContent = text;
     return div.innerHTML;
 }
-
-/**
- * Дополнительные стили для компактных кнопок тем
- */
-const style = document.createElement('style');
-style.textContent = `
-    .theme-btn-small {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        border: 2px solid var(--border);
-        background: var(--bg-secondary);
-        color: var(--text-primary);
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1rem;
-    }
-    
-    .theme-btn-small:hover {
-        transform: scale(1.1);
-        border-color: var(--accent);
-    }
-    
-    .theme-btn-small.active {
-        background: var(--accent);
-        color: white;
-        border-color: var(--accent);
-        transform: scale(1.15);
-    }
-`;
-document.head.appendChild(style);

@@ -1,0 +1,105 @@
+/* 
+ * Color themes
+ */
+
+/* Theme: Sea */
+body[data-theme="sea"] {
+    --bg-primary: #e0f2f7;
+    --bg-secondary: #ffffff;
+    --bg-card: #ffffff;
+    --text-primary: #0d47a1;
+    --text-secondary: #1565c0;
+    --accent: #0288d1;
+    --accent-rgb: 2, 136, 209;
+    --accent-hover: #0277bd;
+    --border: #81d4fa;
+    --shadow: rgba(2, 136, 209, 0.1);
+    --success: #00897b;
+    --danger: #d32f2f;
+    --warning: #f57c00;
+}
+
+/* Theme: Orange Juice */
+body[data-theme="orange"] {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #262626;
+    --bg-card: #2d2d2d;
+    --text-primary: #e6e6e6;
+    --text-secondary: #bdbdbd;
+    --accent: #ff6d00;
+    --accent-rgb: 255, 109, 0;
+    --accent-hover: #ff7f2a;
+    --border: #3f3f3f;
+    --shadow: rgba(0, 0, 0, 0.5);
+    --success: #66bb6a;
+    --danger: #ef5350;
+    --warning: #ffb74d;
+}
+
+/* Theme: Tiffany */
+body[data-theme="tiffany"] {
+    --bg-primary: #e0f2f1;
+    --bg-secondary: #ffffff;
+    --bg-card: #ffffff;
+    --text-primary: #004d40;
+    --text-secondary: #00695c;
+    --accent: #00897b;
+    --accent-rgb: 0, 137, 123;
+    --accent-hover: #00796b;
+    --border: #80cbc4;
+    --shadow: rgba(0, 137, 123, 0.1);
+    --success: #43a047;
+    --danger: #e53935;
+    --warning: #fb8c00;
+}
+
+/* Theme: Dark */
+body[data-theme="dark"] {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --bg-card: #2d2d2d;
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --accent: #bb86fc;
+    --accent-rgb: 187, 134, 252;
+    --accent-hover: #a56de2;
+    --border: #404040;
+    --shadow: rgba(0, 0, 0, 0.5);
+    --success: #4caf50;
+    --danger: #ef5350;
+    --warning: #ffa726;
+}
+
+/* Theme: Light */
+body[data-theme="light"] {
+    --bg-primary: #f5f5f5;
+    --bg-secondary: #ffffff;
+    --bg-card: #ffffff;
+    --text-primary: #212121;
+    --text-secondary: #424242;
+    --accent: #2196f3;
+    --accent-rgb: 33, 150, 243;
+    --accent-hover: #1976d2;
+    --border: #e0e0e0;
+    --shadow: rgba(0, 0, 0, 0.08);
+    --success: #4caf50;
+    --danger: #f44336;
+    --warning: #ff9800;
+}
+
+/* Theme: Wheat */
+body[data-theme="wheat"] {
+    --bg-primary: #faf8f3;
+    --bg-secondary: #ffffff;
+    --bg-card: #ffffff;
+    --text-primary: #5d4037;
+    --text-secondary: #6d4c41;
+    --accent: #8d6e63;
+    --accent-rgb: 141, 110, 99;
+    --accent-hover: #795548;
+    --border: #d7ccc8;
+    --shadow: rgba(141, 110, 99, 0.1);
+    --success: #7cb342;
+    --danger: #e64a19;
+    --warning: #ffa000;
+}
